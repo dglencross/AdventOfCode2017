@@ -85,7 +85,7 @@ class Test_1(unittest.TestCase):
             content = f.readlines()
 
         matrix = build_adjacency_matrix(content)
-        self.assertEquals(1, count_clusters(matrix))
+        self.assertEquals(213, count_clusters(matrix))
 
     def test_count_dummy_clusters(self):
         matrix = build_adjacency_matrix(get_dummy_input())
