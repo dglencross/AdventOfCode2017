@@ -25,6 +25,24 @@ def count_entries(matrix, number):
                 total += 1
     return total
 
+def count_clusters(matrix):
+    nodes = []
+    clusters = 0
+    for i in range(0, len(matrix)):
+        nodes.append(i)
+
+    while len(nodes) > 0:
+        node = nodes.pop()
+        toRemove = []
+
+        for otherNode in nodes:
+            if can_reach(matrix, node, otherNode):
+                toRemove.append(otherNode)
+        for node in toRemove:
+            nodes.remove(node)
+        clusters += 1
+    return clusters
+
 def can_reach(matrix, a, b):
     doneSet = []
     todoSet = []
@@ -56,12 +74,22 @@ def get_reachable_nodes(matrix, a):
 class Test_1(unittest.TestCase):
 
     def test_solution_1(self):
-        content = []
         with open("input_12.txt") as f:
             content = f.readlines()
 
         matrix = build_adjacency_matrix(content)
         self.assertEquals(175, count_entries(matrix, 0))
+
+    def test_solution_2(self):
+        with open("input_12.txt") as f:
+            content = f.readlines()
+
+        matrix = build_adjacency_matrix(content)
+        self.assertEquals(1, count_clusters(matrix))
+
+    def test_count_dummy_clusters(self):
+        matrix = build_adjacency_matrix(get_dummy_input())
+        self.assertEqual(2, count_clusters(matrix))
 
     def test_can_reach_0_2(self):
         matrix = build_adjacency_matrix(get_dummy_input())
