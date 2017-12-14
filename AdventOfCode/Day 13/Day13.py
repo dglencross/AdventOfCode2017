@@ -1,7 +1,7 @@
 import unittest
 
 def calculate_delay(lines):
-    delay = 470000
+    delay = 0
     severity = traverse_but_terminate_if_caught(lines, 0)
 
     while severity > 0:
@@ -38,41 +38,21 @@ def traverse(lines):
 
 
 def collision_score(time, length):
-    if get_location_at_time(length, time) == 0:
+    if is_at_location_zero(time, length):
         return length * time
     return 0
 
+def is_at_location_zero(time, length):
+    if length == 0:
+        return False
 
-def get_location_at_time(length, time):
+    if time == 0 or length == 1:
+        return True
 
-    if length == 0 or time == 0:
-        return 0
+    if time % (length + (length - 2)) == 0:
+        return True
 
-    if time < length:
-        return time
-
-    depth = 0
-    forward = True
-
-    for step in range(0,time):
-        (depth,forward) = move(length, depth, forward)
-
-    return depth
-
-def move(length, depth, forward):
-    if forward:
-        if depth < length - 1:
-            depth += 1
-        else:
-            depth -= 1
-            forward = False
-    else:
-        if depth > 0:
-            depth -= 1
-        else:
-            depth += 1
-            forward = True
-    return depth,forward
+    return False
 
 class Test_1(unittest.TestCase):
 
@@ -82,11 +62,11 @@ class Test_1(unittest.TestCase):
         severity = traverse(content)
         self.assertEquals(2508, severity)
 
-    # def test_solution_2(self):
-    #     with open('day13.txt') as f:
-    #         content = f.readlines()
-    #         delay = calculate_delay(content)
-    #     self.assertEquals(2508, delay)
+    def test_solution_2(self):
+        with open('day13.txt') as f:
+            content = f.readlines()
+            delay = calculate_delay(content)
+        self.assertEquals(3913186, delay)
 
     def test_dummy_input_part_1(self):
         with open('day13_dummy.txt') as f:
@@ -102,24 +82,24 @@ class Test_1(unittest.TestCase):
 
     def test_check_location_at_time_1(self):
         length = 4
-        self.assertEquals(0, get_location_at_time(length, 0))
+        self.assertTrue(is_at_location_zero(0, length))
 
-    def test_check_location_at_time_1(self):
+    def test_check_location_at_time_2(self):
         length = 4
-        self.assertEquals(1, get_location_at_time(length, 1))
+        self.assertFalse(is_at_location_zero(1, length))
 
-    def test_check_location_at_time_1(self):
+    def test_check_location_at_time_3(self):
         length = 4
-        self.assertEquals(2, get_location_at_time(length, 4))
+        self.assertFalse(is_at_location_zero(2, length))
 
-    def test_check_location_at_time_1(self):
+    def test_check_location_at_time_4(self):
         length = 4
-        self.assertEquals(1, get_location_at_time(length, 7))
+        self.assertFalse(is_at_location_zero(1, length))
 
-    def test_check_location_at_time_1(self):
+    def test_check_location_at_time_5(self):
         length = 4
-        self.assertEquals(1, get_location_at_time(length, 11))
+        self.assertFalse(is_at_location_zero(11, length))
 
-
-
-
+    def test_check_location_at_time_6(self):
+        length = 4
+        self.assertTrue(is_at_location_zero(12, length))
