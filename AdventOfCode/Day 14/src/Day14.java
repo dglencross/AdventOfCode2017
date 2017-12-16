@@ -17,7 +17,51 @@ public class Day14 {
 		}
 		
 		return result;
+	}
+	
+	public static Integer solution2(String input) {
 		
+		Integer result = 0;
+		
+		List<String> rows = getRowStrings(input);
+		List<String> knots = knotRows(rows);
+		List<String> hexes = new ArrayList<String>();
+		
+		for(String knot : knots) {
+			String hex = knotToHexidecimal(knot);
+			hexes.add(hex);
+		}
+		
+		String[][] array = RowsToArray(hexes);
+		
+//		printArray(array);
+		
+		return GetNumberOfClusters(array);
+	}
+	
+	public static void printArray(String[][] array) {
+		for (int i=0; i<array.length; i++) {
+			for(int j=0; j<array[i].length; j++) {
+				System.out.print(array[i][j]);
+			}
+			System.out.println("");
+		}
+	}
+	
+	public static String[][] RowsToArray(List<String> rows) {
+		String[][] array = new String[rows.size()][rows.get(0).length()];
+		
+		for (int i=0; i<rows.size(); i++) {
+			for(int j=0; j<rows.get(i).length(); j++) {
+				if (rows.get(i).charAt(j) == '1') {
+					array[i][j] = "#";
+				} else {
+					array[i][j] = ".";
+				}
+			}
+		}
+		
+		return array;
 	}
 	
 	public static List<String> getRowStrings(String input) {
@@ -66,6 +110,80 @@ public class Day14 {
 		}
 		
 		return string;
+	}
+	
+	public static Integer GetNumberOfClusters(String[][] array) {
+		Integer maxNumber = 0;
+		
+		for (int i=0; i<array.length; i++) {
+			for(int j=0; j<array[i].length; j++) {
+				
+				if (getCharAt(i, j, array) == "#") {
+					List<Pair> todoSet = new ArrayList<>();
+					
+					Day14.Pair p = new Day14.Pair(i, j);
+					array[i][j] = "D";
+					
+					todoSet.addAll(GetReachableNodes(p, array));
+					
+					while(!todoSet.isEmpty()) {
+						Pair p2 = todoSet.remove(0);
+						todoSet.addAll(GetReachableNodes(p2, array));
+						array[p2.i][p2.j] = "D";
+					}
+					
+					maxNumber += 1;
+				}
+			}
+		}
+		
+		printArray(array);
+		
+		return maxNumber;
+		
+	}
+	
+	public static List<Pair> GetReachableNodes(Pair p, String[][] array) {
+		
+		List<Pair> reachable = new ArrayList<Day14.Pair>();
+		
+		if (getCharAt(p.i-1, p.j, array) == "#") {
+			reachable.add(new Pair(p.i-1,p.j));
+		}
+		if (getCharAt(p.i+1, p.j, array) == "#") {
+			reachable.add(new Pair(p.i+1,p.j));
+		}
+		if (getCharAt(p.i, p.j-1, array) == "#") {
+			reachable.add(new Pair(p.i,p.j-1));
+		}
+		if (getCharAt(p.i, p.j+1, array) == "#") {
+			reachable.add(new Pair(p.i,p.j+1));
+		}
+		
+		return reachable;
+	}
+	
+	public static String getCharAt(int i, int j, String[][] array) {
+		
+		if (i < 0 || i >= array.length) {
+			return ".";
+		}
+		
+		if (j < 0 || j >= array.length) {
+			return ".";
+		}
+		
+		return array[i][j];
+	}
+	
+	static class Pair {
+		public int i;
+		public int j;
+		
+		Pair(int i, int j) {
+			this.i = i;
+			this.j = j;
+		}
 	}
 	
 }

@@ -32,18 +32,6 @@ public class Day14Tests {
 	}
 	
 	@Test
-	public void test_knot_row() {
-		String knot = Day10.knot(list256, "flqrgnkx-127");
-		System.out.println(knot);
-		
-//		knot = Day10.knot(Day14.list256, "flqrgnkx-1");
-//		System.out.println(knot);
-//		
-//		knot = Day10.knot(Day14.list256, "flqrgnkx-0flqrgnkx-1");
-//		System.out.println(knot);
-	}
-
-	@Test
 	public void test_knot_row_to_binary() {
 		List<String> rowStrings = Day14.getRowStrings("flqrgnkx");
 		
@@ -51,7 +39,6 @@ public class Day14Tests {
 		
 		String hex = Day14.knotToHexidecimal(knots.get(0));
 		
-		System.out.println(hex);
 		Assert.assertEquals(128, hex.length());
 	}
 	
@@ -63,6 +50,16 @@ public class Day14Tests {
 	@Test
 	public void test_solution_1() {
 		Assert.assertEquals(Integer.valueOf(8292), Day14.solution1("ugkiagan"));
+	}
+	
+	@Test
+	public void test_dummy_input_2() {
+		Assert.assertEquals(Integer.valueOf(1242), Day14.solution2("flqrgnkx"));
+	}
+	
+	@Test
+	public void test_solution_2() {
+		Assert.assertEquals(Integer.valueOf(1069), Day14.solution2("ugkiagan"));
 	}
 	
 }
