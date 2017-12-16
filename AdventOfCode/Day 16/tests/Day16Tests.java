@@ -62,6 +62,6 @@ public class Day16Tests {
 	public void test_solution_1() {
 		List<String> list = Day16.dance(instructions, programs);
 		
-		Assert.assertEquals("baedc", Day16.toString(list));
+		Assert.assertEquals("dcmlhejnifpokgba", Day16.toString(list));
 	}
 }
