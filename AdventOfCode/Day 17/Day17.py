@@ -44,14 +44,10 @@ def get_next_insert_location(values, stepSize, location):
     else:
         length = values
 
-    for i in range(0,stepSize):
-        if location + 1 < length:
-            location += 1
-            # print 'stepping to ' + str(location)
-        else:
-            location = 0
-            # print 'stepping to ' + str(location)
-    return location + 1
+    if length > (stepSize + location):
+        return location + stepSize + 1
+    else:
+        return ((stepSize+location) % length) + 1
 
 def get_value_after_2017(look_for, stepSize):
     values = spin(stepSize, 2018)
@@ -91,5 +87,4 @@ class Test_1(unittest.TestCase):
     def test_get_next_location_3(self):
         values = [0, 2, 1]
         self.assertEquals(2, get_next_insert_location(values, 3, 1))
-
 
