@@ -1,5 +1,7 @@
 import unittest
 
+letters_seen = []
+
 def solution1(grid):
     x = get_start_location(grid)
     y = 0
@@ -9,9 +11,12 @@ def solution1(grid):
     count = 0
 
     while not finished and count < 1000000:
-        print str(x) + ',' + str(y) + ',' + str(direction)
+        # print str(x) + ',' + str(y) + ',' + str(direction)
         (x,y,direction) = get_next_location(grid, x, y, direction)
+        if grid[y][x] == ' ':
+            finished = True
         count += 1
+    print count
 
 def get_start_location(grid):
 
@@ -26,8 +31,8 @@ def get_next_location(grid, x, y, direction):
         return x,y,direction
 
     if is_letter(grid, x, y):
-        # todo: capture letter
         print grid[y][x]
+        letters_seen.append(grid[y][x])
         (x, y) = move_straight(x, y, direction)
         return x, y, direction
 
@@ -37,28 +42,34 @@ def get_next_location(grid, x, y, direction):
         return x,y,direction
 
 def turn(grid, x, y, direction):
+    # print 'Turning!'
+    if x == 197 and y == 195:
+        print 'Hello'
     neighbours = get_neighbours(grid, x, y, direction)
 
     for n in neighbours:
-        if grid[n[1]][n[0]] != '':
-            # this is the neighbour
-            if n[0] > x:
-                return 'e'
-            if n[0] < x:
-                return 'w'
-            if n[1] > y:
-                return 's'
-            if n[1] < y:
-                return 'n'
+        if n[0] == 198 and n[1] == 195:
+            print 'hello'
+        if n[1] < len(grid) and n[0] < len(grid[n[1]]):
+            if grid[n[1]][n[0]] != ' ' and grid[n[1]][n[0]] != '' and grid[n[1]][n[0]] != '\n':
+                # this is the neighbour
+                if n[0] > x:
+                    return 'e'
+                if n[0] < x:
+                    return 'w'
+                if n[1] > y:
+                    return 's'
+                if n[1] < y:
+                    return 'n'
 
 def get_neighbours(grid, x, y, direction):
     neighbours = []
 
-    if x < len(grid[0]) and direction != 'w':
+    if x + 2 < len(grid[y]) and direction != 'w':
         neighbours.append((x + 1, y))
     if x - 1 >= 0 and direction != 'e':
         neighbours.append((x - 1, y))
-    if y < len(grid) and direction != 'n':
+    if y + 1 < len(grid) and direction != 'n':
         neighbours.append((x, y + 1))
     if y - 1 >= 0 and direction != 's':
         neighbours.append((x, y - 1))
@@ -84,8 +95,25 @@ def is_letter(grid, x, y):
 
 class Test_1(unittest.TestCase):
 
-    def test_solution1(self):
+    def test_solution1_dummy(self):
         solution1(dummy_grid())
+        print letters_seen
+        self.assertEqual(6, len(letters_seen))
+
+    def test_solution1_(self):
+        solution1(real_grid())
+        print letters_seen
+        self.assertEqual(10, len(letters_seen))
+
+    def test_solution2_dummy(self):
+        solution1(dummy_grid())
+        print letters_seen
+        self.assertEqual(1, len(letters_seen))
+
+    def test_solution2_(self):
+        solution1(real_grid())
+        print letters_seen
+        self.assertEqual(1, len(letters_seen))
 
     def test_get_neighours(self):
         n = get_neighbours(dummy_grid(), 6, 3, 's')
@@ -144,5 +172,10 @@ class Test_1(unittest.TestCase):
 
 def dummy_grid():
     with open("Day19Dummy.txt") as textFile:
+        grid = [line for line in textFile]
+    return grid
+
+def real_grid():
+    with open("Day19.txt") as textFile:
         grid = [line for line in textFile]
     return grid
