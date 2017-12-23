@@ -15,14 +15,14 @@ public class Day18Tests {
 	public void test_dummy_instructions() {
 		List<String> instructions = readInput("Day18Dummy.txt");
 		
-		Assert.assertEquals((Long)4L, Day18.Day18(instructions));
+		Assert.assertEquals((Long)4L, Day18.run(instructions));
 	}
 	
 	@Test
 	public void test_solution_1() {
 		List<String> instructions = readInput("Day18.txt");
 		
-		Assert.assertEquals((Long)4L, Day18.Day18(instructions));
+		Assert.assertEquals((Long)8600L, Day18.run(instructions));
 	}
 	
 	private List<String> readInput(String fileName) {
