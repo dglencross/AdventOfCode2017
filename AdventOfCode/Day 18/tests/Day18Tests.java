@@ -15,14 +15,36 @@ public class Day18Tests {
 	public void test_dummy_instructions() {
 		List<String> instructions = readInput("Day18Dummy.txt");
 		
-		Assert.assertEquals((Long)4L, Day18.run(instructions));
+		Assert.assertEquals((Long)4L, Day18.part1(instructions));
 	}
 	
 	@Test
 	public void test_solution_1() {
 		List<String> instructions = readInput("Day18.txt");
 		
-		Assert.assertEquals((Long)8600L, Day18.run(instructions));
+		Assert.assertEquals((Long)8600L, Day18.part1(instructions));
+	}
+	
+	@Test
+	public void test_part2_dummy() {
+		List<String> instructions = readInput("Day18Dummy2.txt");
+		
+		Assert.assertEquals(3, Day18.part2(instructions));
+	}
+	
+	@Test
+	public void test_part2_solution() {
+		List<String> instructions = readInput("Day18.txt");
+		
+		Assert.assertEquals(1, Day18.part2(instructions));
+	}
+	
+	@Test
+	public void test_cheating() {
+		List<String> instructions = readInput("Day18.txt");
+		
+		Day18_Cheat cheat = new Day18_Cheat(instructions);
+		Assert.assertEquals(1, cheat.part2());
 	}
 	
 	private List<String> readInput(String fileName) {
