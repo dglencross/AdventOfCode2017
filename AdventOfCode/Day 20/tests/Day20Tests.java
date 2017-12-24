@@ -22,14 +22,28 @@ public class Day20Tests {
 	public void run_dummy_part1() {
 		List<String> lines = readInput("Day20Dummy.txt");
 		
-		Assert.assertEquals(0, Day20.run(lines, 4));
+		Assert.assertEquals(0, Day20.solution1(lines, 4));
 	}
 	
 	@Test
 	public void run_solution_part1() {
 		List<String> lines = readInput("Day20.txt");
 		
-		Assert.assertEquals(161, Day20.run(lines, 10000));
+		Assert.assertEquals(161, Day20.solution1(lines, 10000));
+	}
+	
+	@Test
+	public void run_dummy_part2() {
+		List<String> lines = readInput("Day20Dummy2.txt");
+		
+		Assert.assertEquals(1, Day20.solution2(lines, 5));
+	}
+	
+	@Test
+	public void run_solution_part2() {
+		List<String> lines = readInput("Day20.txt");
+		
+		Assert.assertEquals(0, Day20.solution2(lines, 10000));
 	}
 	
 	private List<String> readInput(String fileName) {

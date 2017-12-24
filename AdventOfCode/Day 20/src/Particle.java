@@ -1,6 +1,7 @@
 
 public class Particle {
 
+	private boolean removed;
 	private Long positionX;
 	public Long getPositionX() {
 		return positionX;
@@ -79,6 +80,10 @@ public class Particle {
 		return Math.abs(accelX) + Math.abs(accelY) + Math.abs(accelZ);
 	}
 	
+	public Location getLocation() {
+		return new Location(positionX, positionY, positionZ);
+	}
+	
 	public void tick() {
 		velocityX += accelX;
 		velocityY += accelY;
@@ -93,6 +98,14 @@ public class Particle {
 		return positionX.toString() + positionY.toString() + positionZ.toString() +
 				velocityX.toString() + velocityY.toString() + velocityZ.toString() +
 				accelX.toString() + accelY.toString() + accelZ.toString();
+	}
+
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
 	
 }
