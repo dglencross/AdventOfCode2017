@@ -125,7 +125,7 @@ def expand_once(rules, array):
 
 def expand(rules, array, iterations):
 
-    print 'iterations remaining: ' + str(iterations)
+    cache = {}
 
     for x in range(0, iterations):
         if len(array) == 2 or len(array) == 3:
@@ -133,13 +133,21 @@ def expand(rules, array, iterations):
         elif len(array) % 2 == 0:
             splits = split_into_arrays_of_two(array)
             for i in range(0, len(splits)):
-                result = expand_once(rules, splits[i])
+                if str(splits[i]) in cache.keys():
+                    result = cache[str(splits[i])]
+                else:
+                    result = expand_once(rules, splits[i])
+                    cache[str(splits[i])] = result
                 splits[i] = result
             array = combine_n_arrays(splits)
         elif len(array) % 3 == 0:
             splits = split_into_arrays_of_three(array)
             for i in range(0, len(splits)):
-                result = expand_once(rules, splits[i])
+                if str(splits[i]) in cache.keys():
+                    result = cache[str(splits[i])]
+                else:
+                    result = expand_once(rules, splits[i])
+                    cache[str(splits[i])] = result
                 splits[i] = result
             array = combine_n_arrays(splits)
 
@@ -336,18 +344,6 @@ class Test_1(unittest.TestCase):
 
         self.assertEquals(12, count_hashes(result))
 
-    # 0 pre: 3
-    # 0 post: 4
-    # 1 pre: 4
-    # 1 post: 6
-    # 2 pre: 6
-    # 2 post: 9
-    # 3 pre: 9
-    # 3 post: 12
-    # 4 pre: 12
-    # 4 post: 18
-
-
     def test_size_after_one_iteration_dummy(self):
         start_array = np.array([['.', '#', '.'], ['.', '.', '#'], ['#', '#', '#']])
 
@@ -426,7 +422,7 @@ class Test_1(unittest.TestCase):
         print len(result)
         print len(result[0])
 
-        self.assertEquals(142, count_hashes(result))
+        self.assertEquals(1879071, count_hashes(result))
 
     def test_split_4_by_3(self):
         array = np.array([['#', '.', '.', '#'], ['.', '.', '.', '.'], ['.', '.', '.', '.'], ['#', '.', '.', '#']])
